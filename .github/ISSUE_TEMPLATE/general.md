@@ -6,15 +6,18 @@ labels: "g: initial"
 assignees: ""
 ---
 
-## Background information
+## Background Information
 
-<!-- Description, links, user stories, what is the problem we are trying to solve, etc. If the work is described/tracked elsewhere, feel free to simply link there. -->
+<!-- Description, links, [user stories](https://www.agilealliance.org/glossary/user-stories/), etc. What is the problem we are trying to solve? If the work is described/tracked elsewhere, feel free to simply link there. Use the [INVEST](https://www.agilealliance.org/glossary/invest) method to assess completeness. -->
 
-## Acceptance criteria
+## Implementation Steps
 
-- [definitive thing]
-- [other definitive thing]
+<!-- This is the "how": the steps to get the acceptance criteria fulfilled. They can be filled in and adjusted after the issue is created/groomed. -->
 
----
+- [ ]
 
-The assignee can add some checkboxes as a "sketch" of the steps to complete, which may evolve.
+## Acceptance Criteria
+
+<!-- Definition of Done. ](https://www.agilealliance.org/glossary/definition-of-done) Should be as objective as possible. -->
+
+- [ ]

@@ -1,3 +1,5 @@
+**This repository is in maintenance mode and only accepting fixes. The Tech Portfolio and TTS Digital Council are working on a strategy for TTS microsites which will inform the future of this theme. [Open an issue to provide any feedback](https://github.com/18F/uswds-jekyll/issues/new).**
+
 # Jekyll + U.S. Web Design System
 
 This is a [Jekyll theme](https://jekyllrb.com/docs/themes/) for the
@@ -19,7 +21,9 @@ This is a [Jekyll theme](https://jekyllrb.com/docs/themes/) for the
    - [Search](#search)
    - [Analytics](#analytics)
    - [Last modified date](#last-modified-date)
+   - [Edit page](#edit-page)
    - [Anchor JS](#anchor-js)
+   - [Private Eye JS](#private-eye-js)
 1. [Assets](#assets)
    - [Stylesheets](#stylesheets)
    - [Scripts](#scripts)
@@ -28,7 +32,7 @@ This is a [Jekyll theme](https://jekyllrb.com/docs/themes/) for the
    - [Overriding includes and layouts](#overriding-includes-and-layouts)
 1. [Components](#components)
    - [Header](#header)
-   - [Footer](#footer)
+   - [Identifier](#identifier)
 1. [Layouts](#layouts)
    - [Default](#layout-default)
    - [Page](#layout-page)
@@ -102,7 +106,7 @@ To reference a specific version of this theme:
 
 ## Configuration
 
-Configuration of common elements ([header](#header), [footer](#footer), [navigation](#navigation), etc.) happens in your project's [data files](https://jekyllrb.com/docs/datafiles/). See this project's [data directory](_data) for reference configurations of each component.
+Configuration of common elements ([header](#header), [identifier](#identifier), [navigation](#navigation), etc.) happens in your project's [data files](https://jekyllrb.com/docs/datafiles/). See this project's [data directory](_data) for reference configurations of each component.
 
 The [default layout](#layout-default) also provides a mechanism for automatically including [stylesheets](#stylesheets) and [scripts](#scripts) on a site-wide, layout-wide, and per-page basis. See [asset load order](#asset-load-order) for more information.
 
@@ -142,7 +146,7 @@ primary:
     links: <links>
 ```
 
-This scheme allows you to define navigational elements that can be shared by different components, such as the [header](#header) and [footer](#footer). See the documentation for those components for more info.
+This scheme allows you to define navigational elements that can be shared by different components, such as the [header](#header) and [sidenav](#Page-subnavigation). See the documentation for those components for more info.
 
 ### Page title
 
@@ -173,7 +177,7 @@ subnav:
 ## Section two
 ```
 
-As with the [header](#header) and [footer](#footer), the `sidenav` field may either reference a common [navigation list](#navigation) from `_data/navigation.yml` (recommended) or be a literal list of links.
+As with the [header](#header), the `sidenav` field may either reference a common [navigation list](#navigation) from `_data/navigation.yml` (recommended) or be a literal list of links.
 
 The `subnav` field should be used to link to sections _within_ the current page, because links to other pages will cause the linking page's side navigation to collapse when visited.
 
@@ -283,14 +287,20 @@ You can add DAP to your site by uncommenting the `dap_agency` line and, if need 
 # dap_subagency: TTS
 ```
 
+### Feedback form
+
+To add a user feedback form, create a new survey through [Touchpoints](https://touchpoints.digital.gov/) and add the ID via the `touchpoints_form_id` key in `_config.yml`.
+
 ### Last modified date
 
 To show the last date a page was last modified by:
 
-1. Add this line to the `footer.yml` data file:
+1. Add these lines to the `edit-page.yml` data file:
 
     ```yml
-    last_updated: true
+    last_modified:
+      display_date: true
+      date_format: '%B %d, %Y'
     ```
 
 1. Add the following to your `Gemfile`:
@@ -301,14 +311,32 @@ To show the last date a page was last modified by:
     end
     ```
 
-This will add the date right before the footer component.
+This will add the date right before the identifier component.
+
+### Edit page
+To add a link which will allow visitors to submit edits to the current page via GitHub, add the following lines to to the `edit-page.yml` data file:
+
+```yml
+edit_page:
+  display_link: true
+  text: "Edit this page"
+```
+This will add the edit link right before the identifier component.
 
 ### Anchor JS
 
-You can show an anchor link next to header tags by uncommenting this section from the `_config.yml` data file. This will add an anchor link after the header tag on the page and post layouts making ech header linkable. See https://github.com/bryanbraun/anchorjs for more information.
+You can show an anchor link next to header tags by uncommenting this section from the `_config.yml` data file. This will add an anchor link after the header tag on the page and post layouts making each header linkable. See https://github.com/bryanbraun/anchorjs for more information.
 
 ```yml
 # anchor_js_targets: [h1, h2, h3, h4, h5, h6]
+```
+
+### Private Eye JS
+
+By default, the USWDS Jekyll theme uses [Private Eye](https://github.com/18F/private-eye) to denote private links. You can turn this on by adding the setting below in your _config.yml. If you would like to customize the default Private Eye configuration, you can find it in `/assets/js/private_eye_conf.js`.
+
+```yml
+private_eye: true
 ```
 
 ## Assets
@@ -348,7 +376,7 @@ scripts:
     async: true # optional
 ```
 
-Scripts specified as objects (in the latter item above) must have a `src` property. Scripts with `async: true` will get an `async` attribute, which tells the browser _not_ to let this script's loading block the execution of subsequent scripts. If the execution order of your scripts is **not** important, setting `async: true` may provide performance benefits to your users. (Conversely, if you don't know whether your scripts need to execute in a particular order, then you should not set `async: true` because it may prevent your scripts from running propertly.)
+Scripts specified as objects (in the latter item above) must have a `src` property. Scripts with `async: true` will get an `async` attribute, which tells the browser _not_ to let this script's loading block the execution of subsequent scripts. If the execution order of your scripts is **not** important, setting `async: true` may provide performance benefits to your users. (Conversely, if you don't know whether your scripts need to execute in a particular order, then you should not set `async: true` because it may prevent your scripts from running properly.)
 
 ### Asset load order
 
@@ -411,12 +439,10 @@ The [header.html include](_includes/header.html) sets the `header` template vari
 
 See this repo's [header.yml](_data/header.yml) for more info.
 
-### Footer
+### Identifier
 
-The [footer.html include](_includes/footer.html) sets the `footer` template variable to `site.data.footer`, the value of which is set in your Jekyll project's `_data/footer.yml` file. Then it includes [components/footer.html](_includes/components/footer.html) to
-render the footer's markup.
-
-See this repo's [footer.yml](_data/footer.yml) for more info.
+The [components/identifier.html include](_includes/components/identifier.html) sets the `identifier` template variable to `site.data.identifier`, the value of which is set in your Jekyll project's `_data/identifier.yml` file.
+See this repo's [identifier.yml](_data/identifier.yml) for more info.
 
 ## Layouts
 
@@ -533,9 +559,6 @@ See [this example pull request](https://github.com/18F/before-you-ship/pull/458)
    --> header.yml
    type: [basic | basic-mega | extended | extended-mega]
 
-   --> footer.yml
-   type: [slim | default | big]
-
    --> theme.yml (examples)
    colors:
      usa-banner:
@@ -577,41 +600,62 @@ See [this example pull request](https://github.com/18F/before-you-ship/pull/458)
        side-nav-link-hover: 'primary-dark'
        side-nav-link-hover-bg: 'base-lightest'
        side-nav-link-current: 'primary-dark'
-     footer:
-       primary-footer-bg: 'base-lightest'
-       primary-footer-link: 'ink'
-       footer-bg: 'base-lighter'
-       footer-text: 'ink'
-       footer-link: 'ink'
-       footer-social-link: 'black-transparent-10'
 
    ```
 
 1. Check that css is referencing `uswds-theme.css`
 
+
 ## Development
 
-To develop this theme and/or test it locally:
+This section explains how to develop this theme and/or test it locally.
 
-1. Clone this repo
 
-1. Check the version of USWDS in `package.json` — update to the newest version if necessary, and sync its new files to the theme.
+### Requirements
 
-   > `rake update`
+- [Ruby](https://www.ruby-lang.org/)
+- [Bundler](https://bundler.io/) 2.x
+- [Node.js](https://nodejs.org/)
 
-1. Start Jekyll to preview the effects of your changes. This will build the Jekyll site, watch the Sass files, and recompile the Sass when there are changes.
 
-   > `npm start`
+### Setup
 
-   **or**
+Install the Node.js dependencies.
 
-   Create a new Jekyll project, follow the
-   [installation](#installation) instructions, then change your
-   `Gemfile` to point at the local clone of this repo:
+    $ npm install
 
-   ```ruby
-   gem 'uswds-jekyll', :path => '../path/to/uswds-jekyll'
-   ```
+Install Ruby dependencies.
+
+    $ npm run setup-jekyll
+
+Start the application. This allows you to preview the effects of your changes.
+Jekyll will build the site, watch the Sass files, and rebuild when there are
+changes.
+
+    $ npm start
+
+Open your web browser to [localhost:4000](http://localhost:4000/).
+
+
+### To update USWDS
+
+When new version of USWDS is released, you should pull in the latest assets.
+
+    $ rake update
+
+Review and commit the assets.
+
+
+### Working with a Jekyll site
+
+If you want to test an existing Jekyll site that uses uswds-jekyll, you can link
+the gem to your local uswds-jekyll repo.
+
+In your Jekyll site, change your `Gemfile` to point at the local clone of this repo.
+
+```ruby
+gem 'uswds-jekyll', :path => '../path/to/uswds-jekyll'
+```
 
 ### Publish to Rubygems
 
@@ -625,8 +669,8 @@ To develop this theme and/or test it locally:
 #### Scripts
 
 - `start`: Starts the jekyll site
-- `setup-uswds`: Copies assets from the USWDS package to their theme locations, but running the following scipts, which can also be run separately:
+- `setup-uswds`: Copies assets from the USWDS package to their theme locations, by running the following scripts, which can also be run separately:
   - `sync-assets`: Copies assets to `assets/uswds`
-  - `sync-sass`: Copies Sass cource files to `_sass/uswds/src/`
+  - `sync-sass`: Copies Sass source files to `_sass/uswds/src/`
   - `sync-default-settings`: Copies default settings files to `_sass/uswds/settings`
   - `sync-theme-settings`: Copies only theme settings files to `_sass/settings`
